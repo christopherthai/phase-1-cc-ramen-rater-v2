@@ -68,6 +68,7 @@ const displayRamens = () => {
       })
 
       ramenMenu.append(ramenImage)
+      
     })
   })
 };
