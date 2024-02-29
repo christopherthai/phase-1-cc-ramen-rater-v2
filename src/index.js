@@ -19,11 +19,35 @@ const handleClick = (ramen) => {
 
 const addSubmitListener = () => {
 
-  const newRamen = document.querySelector('#new-ramen')
+  const ramenForm = document.querySelector('#new-ramen')
+  const ramenMenu = document.querySelector('#ramen-menu')
+  let ramenImage = document.createElement('img')
 
-  newRamen.addEventListener('submit', (event) => {
+  ramenForm.addEventListener('submit', (event) => {
     
     event.preventDefault()
+
+    const newRamen = {
+        
+      "name": event.target.name.value,
+      "restaurant": event.target.restaurant.value,
+      "image": event.target.image.value,
+      "rating": event.target.rating.value,
+      "comment": event.target["new-comment"].value
+
+    }
+
+      ramenImage.src = newRamen.image
+      ramenImage.id = newRamen.id
+      
+      ramenImage.addEventListener('click', (event) => {
+        event.preventDefault()
+        handleClick(newRamen)
+      })
+
+      event.target.reset();
+      ramenMenu.append(ramenImage)
+
 
     fetch("http://localhost:3000/ramens", {
       method: "POST",
@@ -31,15 +55,7 @@ const addSubmitListener = () => {
         "Content-Type": "application/json",
           Accept: "application/json"
       },
-      body: JSON.stringify({
-        
-        "name": event.target.name.value,
-        "restaurant": event.target.restaurant.value,
-        "image": event.target.image.value,
-        "rating": event.target.rating.value,
-        "comment": event.target["new-comment"].value
-
-      })
+      body: JSON.stringify(newRamen)
     })
       .then(response => response.json())
       .then(ramen_data => {
@@ -75,8 +91,8 @@ const displayRamens = () => {
 
 const main = () => {
 
-  addSubmitListener()
   displayRamens()
+  addSubmitListener()
 
 }
 
